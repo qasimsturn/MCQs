@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCQs Practice</title>
+
+<style>
+body { font-family: Arial; background:#0f172a; color:#fff; padding:15px; }
+.box { background:#1e293b; padding:15px; border-radius:10px; margin-bottom:15px; }
+button { padding:12px 20px; background:#22c55e; border:none; color:#fff; border-radius:6px; font-size:16px; }
+#timer { font-size:18px; margin-bottom:15px; color:#facc15; }
+</style>
+
+</head>
+
+<body>
+
+<h2>Business Ethics MCQs</h2>
+<div id="timer">Time: 20:00</div>
+
+<form id="quizForm"></form>
+
+<button onclick="submitQuiz()">Submit</button>
+
+<h3 id="result"></h3>
+
+<script>
+
+let questions = [
+{q:"What is business ethics?", o:["Study of business laws","Study of moral principles in business","Study of financial systems","Study of marketing strategies"], a:1},
+{q:"Core principle?", o:["Profit only","Transparency","Monopoly","Price fixing"], a:1},
+{q:"Whistleblowing?", o:["Promoting products","Reporting unethical activities","Increasing sales","Hiring"], a:1},
+{q:"Unethical act?", o:["Honest reporting","Insider trading","Fair competition","Transparency"], a:1},
+{q:"CSR refers to?", o:["Profit only","Legal only","Responsibility to society","Internal only"], a:2},
+
+{q:"Ethical behavior example?", o:["Bribery","Fraud","Honesty in reporting","Tax evasion"], a:2},
+{q:"Conflict of interest?", o:["Competition","Personal interest vs duty","Overtime","Price increase"], a:1},
+{q:"NOT stakeholder?", o:["Employees","Customers","Competitors","Government"], a:2},
+{q:"Ethical leadership?", o:["Profit focus","Fairness honesty","No rules","No planning"], a:1},
+{q:"Acceptable gift?", o:["Expensive","Secret","Reasonable transparent","Mandatory"], a:2},
+
+{q:"Insider trading?", o:["Selling products","Using non-public info","Hiring","Marketing"], a:1},
+{q:"Ethical dilemma?", o:["Easy decision","Two right options","Moral conflict","Financial issue"], a:2},
+{q:"Violates ethics?", o:["Fair wages","Environment protection","Child labor","Equal opportunity"], a:2},
+{q:"Code of ethics?", o:["Financial report","Guidelines","Marketing","Production"], a:1},
+{q:"Greatest good theory?", o:["Deontology","Utilitarianism","Egoism","Relativism"], a:1},
+
+{q:"Deontology based on?", o:["Outcomes","Rules duties","Profit","Demand"], a:1},
+{q:"Bribery is?", o:["Ethical","Legal","Unethical","Neutral"], a:2},
+{q:"Relativism?", o:["Universal","Depends on culture","Same always","Not important"], a:1},
+{q:"Environmental ethics?", o:["Profit","Worker","Environment","Marketing"], a:2},
+{q:"Corporate governance?", o:["Training","Board oversight","Ads","Sales"], a:1},
+
+{q:"Decision based on?", o:["Profit","Personal","Moral values","Trends"], a:2},
+{q:"Benefit?", o:["Corruption","Reputation","Less customers","Legal issues"], a:1},
+{q:"Unethical ads?", o:["Honest","Misleading","Details","Transparent"], a:1},
+{q:"Goal?", o:["Competition","Fairness","Ads","Reduce employees"], a:1},
+{q:"Discrimination?", o:["Equal pay","Merit hiring","Gender favor","Training"], a:2},
+
+{q:"Sustainable?", o:["Short term","Long term impact","Debt","Reduce production"], a:1},
+{q:"Unethical HR?", o:["Equal hiring","Fair appraisal","Nepotism","Training"], a:2},
+{q:"Ethical issues arise?", o:["Clear policy","Resources","Conflicts","Profit"], a:2},
+{q:"Integrity?", o:["Corruption","Honesty","Fraud","Deception"], a:1},
+{q:"Green marketing?", o:["Profit","High price","Eco products","Competition"], a:2},
+
+{q:"Fair trade?", o:["Illegal","No tax","Fair wages","Monopoly"], a:2},
+{q:"Legal issue?", o:["Gossip","Theft","Networking","Communication"], a:1},
+{q:"Transparency?", o:["Hiding","Open communication","Secrecy","Avoid"], a:1},
+{q:"Ethical org feature?", o:["Corruption","Accountability","Favoritism","Deception"], a:1},
+{q:"Governance ensures?", o:["Satisfaction","Accountability","Marketing","Design"], a:1},
+
+{q:"Ethical marketing avoids?", o:["Satisfaction","Honesty","Deception","Quality"], a:2},
+{q:"Social responsibility?", o:["Ignore","Community welfare","Pollution","Reduce jobs"], a:1},
+{q:"Price fixing?", o:["Free pricing","Illegal control","Discount","Competition"], a:1},
+{q:"Ethics helps?", o:["Reduce trust","Long relations","Fraud","Decrease sales"], a:1},
+{q:"Responsibility?", o:["Ignore law","Safe workplace","Avoid tax","Exploit"], a:1},
+
+{q:"Ethical culture?", o:["Profit only","Shared values","Strict rules","High salary"], a:1},
+{q:"Fraud example?", o:["Honest","Manipulating data","Teamwork","Training"], a:1},
+{q:"Fairness?", o:["Equal treatment","Favor top","Ignore rules","Profit"], a:0},
+{q:"Ethical audit?", o:["Financial","Ethical review","Marketing","Production"], a:1},
+{q:"Rights violation?", o:["Training","Safe work","Harassment","Equal pay"], a:2},
+
+{q:"CSR component?", o:["Environment","Price fixing","Fraud","Tax evasion"], a:0},
+{q:"Accounting ethics?", o:["Manipulation","Honest reporting","Profit","Hidden"], a:1},
+{q:"Supply chain ethics?", o:["Child labor","Fair wages","Ignore rules","No contracts"], a:1},
+{q:"Relativism again?", o:["Universal","Varies","Fixed","Unnecessary"], a:1},
+{q:"Ethical behavior?", o:["Mislead","Hide defects","Honor promises","Bribe"], a:2}
+];
+
+let form = document.getElementById("quizForm");
+
+questions.forEach((item,i)=>{
+let div = document.createElement("div");
+div.className="box";
+div.innerHTML = `<p>${i+1}. ${item.q}</p>` +
+item.o.map((opt,j)=>`<input type="radio" name="q${i}" value="${j}"> ${opt}<br>`).join("");
+form.appendChild(div);
+});
+
+let time = 1200;
+let timer = setInterval(()=>{
+let m = Math.floor(time/60);
+let s = time%60;
+document.getElementById("timer").innerText = `Time: ${m}:${s<10?'0'+s:s}`;
+time--;
+if(time<0){
+clearInterval(timer);
+submitQuiz();
+}
+},1000);
+
+function submitQuiz(){
+let score=0;
+questions.forEach((q,i)=>{
+let ans = document.querySelector(`input[name="q${i}"]:checked`);
+if(ans && Number(ans.value)===q.a) score++;
+});
+let percent = ((score/questions.length)*100).toFixed(2);
+document.getElementById("result").innerText = `Score: ${score}/${questions.length} (${percent}%)`;
+window.scrollTo(0,document.body.scrollHeight);
+}
+
+</script>
+
+</body>
+</html>
